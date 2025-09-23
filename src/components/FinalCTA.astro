@@ -1,0 +1,77 @@
+---
+// src/components/FinalCTA.astro
+---
+
+<section id="final-cta">
+    <div class="cs-container">
+        <div class="cs-content">
+            <h2 class="cs-title">Готовы преобразить ваш бизнес?</h2>
+            <p class="cs-text">
+                Не откладывайте рост на завтра. Давайте обсудим, как наша AI-платформа может начать приносить вам клиентов уже сегодня.
+            </p>
+            <a href="/contact" class="cs-button-solid">Начать проект</a>
+        </div>
+    </div>
+</section>
+
+<style lang="less">
+#final-cta {
+    padding: var(--sectionPadding);
+    background-color: var(--secondary);
+    position: relative;
+    overflow: hidden;
+
+    /* Декоративный элемент */
+    &:before {
+        content: '';
+        position: absolute;
+        display: block;
+        height: 300px;
+        width: 300px;
+        background: var(--primary);
+        border-radius: 50%;
+        opacity: 0.1;
+        top: -150px;
+        left: -150px;
+        z-index: 1;
+    }
+
+    .cs-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .cs-title, .cs-text {
+        color: var(--bodyTextColorWhite);
+    }
+
+    .cs-title {
+        margin-bottom: 1.5rem;
+    }
+
+    .cs-text {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2.5rem;
+        opacity: 0.8;
+    }
+
+    .cs-button-solid {
+        background-color: var(--primary);
+        color: var(--headerColor);
+
+        &:hover {
+            background-color: #fff;
+            color: var(--headerColor);
+        }
+    }
+}
+</style>
