@@ -1,10 +1,6 @@
 import { z, defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 
-// Every collection must reflect Decap's config.yml collection schema
-// In order to be able to optimize images with Astro built-in compoments, like <Image />, we first must use this image helper
-// Doc: https://docs.astro.build/en/guides/images/#images-in-content-collections
-
 const blogsCollection = defineCollection({
 	loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/blog" }),
 	schema: ({ image }) =>
@@ -16,6 +12,11 @@ const blogsCollection = defineCollection({
 			image: image(),
 			imageAlt: z.string(),
 			isFeatured: z.boolean().optional().default(false),
+			// --- НОВЫЕ ПОЛЯ ДЛЯ SEO-ДВИГАТЕЛЯ ---
+			// Определяем тип контента: "столп" или "кластер"
+			contentType: z.enum(['pillar', 'cluster']).optional().default('cluster'),
+			// Если это "кластер", указываем ID родительского "столпа"
+			parentPillar: z.string().optional(),
 		}),
 });
 
