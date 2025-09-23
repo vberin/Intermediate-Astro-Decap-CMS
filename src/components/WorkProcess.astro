@@ -1,0 +1,161 @@
+---
+// src/components/WorkProcess.astro
+import { Icon } from 'astro-icon/components';
+
+const steps = [
+    {
+        step: "01",
+        title: "Консультация и Бриф",
+        description: "Мы начинаем с детального обсуждения ваших целей, чтобы понять задачи вашего бизнеса и предложить лучшее решение.",
+        icon: "mdi:account-voice"
+    },
+    {
+        step: "02",
+        title: "Разработка Прототипа",
+        description: "На основе брифа мы создаем интерактивный прототип вашего будущего сайта, чтобы вы могли оценить его логику и функциональность.",
+        icon: "mdi:pencil-ruler"
+    },
+    {
+        step: "03",
+        title: "Дизайн и Наполнение",
+        description: "После утверждения прототипа мы приступаем к дизайну, наполнению контентом и настройке AI-инструментов.",
+        icon: "mdi:palette-swatch"
+    },
+    {
+        step: "04",
+        title: "Запуск и Обучение",
+        description: "Мы запускаем ваш сайт и проводим обучение по работе с админ-панелью, чтобы вы могли самостоятельно управлять контентом.",
+        icon: "mdi:rocket-launch"
+    }
+];
+---
+
+<section id="work-process">
+    <div class="cs-container">
+        <div class="cs-content">
+            <span class="cs-topper">Процесс</span>
+            <h2 class="cs-title">Как мы работаем: просто и прозрачно</h2>
+        </div>
+        <div class="cs-card-group">
+            {steps.map((item, index) => (
+                <div class="cs-item">
+                    <div class="cs-icon-wrapper">
+                        <Icon name={item.icon} class="cs-icon" />
+                        <span class="cs-step-number">{item.step}</span>
+                    </div>
+                    <div class="cs-item-content">
+                        <h3 class="cs-item-title">{item.title}</h3>
+                        <p class="cs-item-text">{item.description}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style lang="less">
+#work-process {
+    padding: var(--sectionPadding);
+    background-color: #fff;
+
+    .cs-container {
+        width: 100%;
+        max-width: 1280px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+    }
+
+    .cs-content {
+        text-align: center;
+    }
+
+    .cs-card-group {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    .cs-item {
+        text-align: center;
+        padding: 2rem 1.5rem;
+        border-radius: 8px;
+        background-color: #f7f7f7;
+        transition: transform 0.3s, box-shadow 0.3s;
+
+        &:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    }
+
+    .cs-icon-wrapper {
+        margin: 0 auto 1.5rem;
+        position: relative;
+        width: 80px;
+        height: 80px;
+        background-color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+
+    .cs-icon {
+        font-size: 2.5rem;
+    }
+
+    .cs-step-number {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: var(--secondary);
+        color: #fff;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        border: 2px solid #fff;
+    }
+    
+    .cs-item-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--headerColor);
+        margin-bottom: 1rem;
+    }
+
+    .cs-item-text {
+        color: var(--bodyTextColor);
+    }
+
+    /* Dark Mode */
+    body.dark-mode & {
+        background-color: var(--dark);
+
+        .cs-item {
+            background-color: var(--accent);
+        }
+
+        .cs-item-title {
+            color: var(--bodyTextColorWhite);
+        }
+
+        .cs-item-text {
+            color: var(--bodyTextColorWhite);
+            opacity: 0.8;
+        }
+
+        .cs-step-number {
+             border-color: var(--accent);
+        }
+    }
+}
+</style>
