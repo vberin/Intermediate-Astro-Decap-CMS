@@ -1,0 +1,193 @@
+---
+// src/components/SocialProof.astro
+// В будущем здесь можно будет получать данные из CMS
+const reviews = [
+  {
+    text: "Отличный сервис! Все сделали быстро и качественно. Наш новый сайт привлекает клиентов как никогда раньше.",
+    author: "Иван Петров",
+    source: "Google Maps"
+  },
+  {
+    text: "Профессионалы своего дела. Помогли нам автоматизировать блог, теперь у нас постоянно свежий контент без лишних усилий.",
+    author: "Анна Смирнова",
+    source: "Отзыв клиента"
+  },
+  {
+    text: "AI-консультант — это просто находка! Он отвечает на 80% вопросов клиентов, освобождая время нашим менеджерам.",
+    author: "Ольга Васильева",
+    source: "Отзыв клиента"
+  }
+];
+
+const socialLinks = [
+    { name: 'Facebook', url: '#', icon: 'mdi:facebook' },
+    { name: 'Telegram', url: '#', icon: 'mdi:telegram' },
+    { name: 'X', url: '#', icon: 'mdi:twitter' },
+]
+---
+<section id="social-proof">
+    <div class="cs-container">
+        <div class="cs-logo-group">
+            <h3 class="cs-subheader">Нам доверяют</h3>
+            <div class="cs-logos">
+                <img src="/assets/svgs/logo-black.svg" alt="Логотип клиента 1" loading="lazy" decoding="async">
+                <img src="/assets/svgs/logo-black.svg" alt="Логотип клиента 2" loading="lazy" decoding="async">
+                <img src="/assets/svgs/logo-black.svg" alt="Логотип клиента 3" loading="lazy" decoding="async">
+                <img src="/assets/svgs/logo-black.svg" alt="Логотип клиента 4" loading="lazy" decoding="async">
+            </div>
+        </div>
+
+        <div class="cs-reviews-section">
+             <h2 class="cs-title">Что говорят наши клиенты</h2>
+            <div class="cs-reviews-grid">
+                {reviews.map(review => (
+                    <div class="cs-review-card">
+                        <p class="cs-review-text">"{review.text}"</p>
+                        <span class="cs-review-author">- {review.author}, {review.source}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+        
+        <div class="cs-social-section">
+            <h3 class="cs-subheader">Следите за нами</h3>
+            <div class="cs-social-links">
+                {socialLinks.map(link => (
+                    <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`Перейти в ${link.name}`}>
+                        <astro-icon name={link.icon} />
+                    </a>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="less">
+#social-proof {
+    padding: var(--sectionPadding);
+    background-color: #f7f7f7;
+
+    .cs-container {
+        width: 100%;
+        max-width: 1280px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+    }
+
+    .cs-subheader {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        color: var(--headerColor);
+        text-align: center;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+    }
+
+    .cs-title {
+        text-align: center;
+    }
+
+    /* Логотипы */
+    .cs-logo-group {
+        width: 100%;
+        .cs-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            img {
+                height: 40px;
+                width: auto;
+                opacity: 0.7;
+                filter: grayscale(1);
+                transition: opacity 0.3s, filter 0.3s;
+                &:hover {
+                    opacity: 1;
+                    filter: grayscale(0);
+                }
+            }
+        }
+    }
+
+    /* Отзывы */
+    .cs-reviews-section {
+        width: 100%;
+    }
+
+    .cs-reviews-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .cs-review-card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 1px solid #e8e8e8;
+    }
+
+    .cs-review-text {
+        font-style: italic;
+        margin-bottom: 1rem;
+        color: var(--bodyTextColor);
+    }
+
+    .cs-review-author {
+        font-weight: bold;
+        color: var(--headerColor);
+    }
+
+    /* Социальные сети */
+    .cs-social-section {
+        width: 100%;
+    }
+
+    .cs-social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        
+        a {
+            color: var(--headerColor);
+            font-size: 2rem; // Размер иконок
+            transition: color 0.3s;
+            
+            &:hover {
+                color: var(--primary);
+            }
+        }
+    }
+    
+    /* Dark Mode */
+    body.dark-mode & {
+        background-color: var(--medium);
+
+        .cs-subheader, .cs-review-author {
+            color: var(--bodyTextColorWhite);
+        }
+
+        .cs-logo-group .cs-logos img {
+            filter: grayscale(1) brightness(1000%);
+        }
+
+        .cs-review-card {
+            background: var(--accent);
+            border-color: var(--dark);
+        }
+
+        .cs-social-links a {
+            color: var(--bodyTextColorWhite);
+
+             &:hover {
+                color: var(--primaryLight);
+            }
+        }
+    }
+}
+</style>
