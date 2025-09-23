@@ -17,7 +17,7 @@ export default defineConfig({
       priority: 0.7,
     }),
   ],
-  // --- ДОБАВЬТЕ ЭТОТ БЛОК ---
+  // --- ЭТОТ БЛОК ОБЯЗАТЕЛЕН ДЛЯ КОРРЕКТНОЙ СБОРКИ ---
   vite: {
     resolve: {
       alias: {
