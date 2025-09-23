@@ -37,4 +37,24 @@ collections:
       - { label: "Cover Image", name: "image", widget: "image" }
       - { label: "Image Caption", name: "imageAlt", widget: "string" }
       - { label: "Is it a featured post?", name: "isFeatured", widget: "boolean", default: false }
+      # --- НОВЫЕ ПОЛЯ ДЛЯ SEO-ДВИГАТЕЛЯ ---
+      - label: "Тип контента"
+        name: "contentType"
+        widget: "select"
+        options:
+          - { label: "Кластерная статья (Обычная)", value: "cluster" }
+          - { label: "Страница-Столп (Основная)", value: "pillar" }
+        default: "cluster"
+      - label: "Родительская страница-столп"
+        name: "parentPillar"
+        widget: "relation"
+        collection: "blog"
+        search_fields: ["title"]
+        value_field: "{{slug}}"
+        display_fields: ["title"]
+        required: false
+        # Это поле будет отображаться только если тип контента - "Кластерная статья"
+        condition:
+          field: "contentType"
+          value: "cluster"
       - { label: "Body", name: "body", widget: "markdown" }
