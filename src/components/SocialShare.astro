@@ -1,0 +1,125 @@
+---
+// src/components/SocialShare.astro
+import { Icon } from 'astro-icon/components';
+
+// Эти данные можно будет вынести в CMS
+const sharePlatforms = [
+    { name: 'Facebook', icon: 'mdi:facebook', shareUrl: 'https://www.facebook.com/sharer/sharer.php?u=' },
+    { name: 'Telegram', icon: 'mdi:telegram', shareUrl: 'https://t.me/share/url?url=' },
+    { name: 'X (Twitter)', icon: 'mdi:twitter', shareUrl: 'https://twitter.com/intent/tweet?url=' },
+];
+
+const shareText = "Ознакомьтесь с этим замечательным сайтом!";
+---
+
+<section id="social-share">
+    <div class="cs-container">
+        <h3 class="cs-subheader">Понравилось? Поделитесь с друзьями!</h3>
+        <div class="cs-share-buttons">
+            {sharePlatforms.map(platform => (
+                <a href="#" class="cs-share-button" data-url={platform.shareUrl} data-text={shareText} aria-label={`Поделиться в ${platform.name}`}>
+                    <Icon name={platform.icon} />
+                    <span>{platform.name}</span>
+                </a>
+            ))}
+        </div>
+    </div>
+</section>
+
+<script>
+    // Этот скрипт делает кнопки "Поделиться" функциональными
+    document.addEventListener('astro:page-load', () => {
+        const shareButtons = document.querySelectorAll('.cs-share-button');
+        
+        shareButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageUrl = encodeURIComponent(window.location.href);
+                const shareUrl = button.getAttribute('data-url');
+                const shareText = encodeURIComponent(button.getAttribute('data-text'));
+                
+                let fullUrl = `${shareUrl}${pageUrl}&text=${shareText}`;
+                if(button.getAttribute('data-url').includes('facebook')) {
+                    fullUrl = `${shareUrl}${pageUrl}`;
+                }
+
+                window.open(fullUrl, '_blank', 'width=600,height=400');
+            });
+        });
+    });
+</script>
+
+<style lang="less">
+#social-share {
+    padding: 2rem var(--sectionPadding);
+    background-color: #fff;
+    border-top: 1px solid #e8e8e8;
+}
+
+.cs-container {
+    width: 100%;
+    max-width: 1280px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.cs-subheader {
+    font-size: 1.25rem;
+    color: var(--headerColor);
+    text-align: center;
+}
+
+.cs-share-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.cs-share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    text-decoration: none;
+    color: var(--headerColor);
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+        background-color: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+    }
+
+    .astro-icon {
+        font-size: 1.5rem;
+    }
+}
+
+/* Dark Mode */
+body.dark-mode & {
+    background-color: var(--dark);
+    border-top-color: var(--accent);
+
+    .cs-subheader {
+        color: var(--bodyTextColorWhite);
+    }
+
+    .cs-share-button {
+        border-color: var(--accent);
+        color: var(--bodyTextColorWhite);
+
+        &:hover {
+            background-color: var(--primaryLight);
+            color: var(--headerColor);
+            border-color: var(--primaryLight);
+        }
+    }
+}
+</style>
