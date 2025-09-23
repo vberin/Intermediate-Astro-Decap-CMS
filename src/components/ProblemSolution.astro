@@ -1,0 +1,143 @@
+---
+// src/components/ProblemSolution.astro
+import { Image } from "astro:assets";
+import image from "@assets/images/cabinets2.jpg";
+
+const problems = [
+    "Устаревший дизайн кухни, который больше не вдохновляет.",
+    "Недостаток места для хранения и беспорядок на столешницах.",
+    "Неэффективное использование пространства, делающее готовку неудобной."
+];
+
+const solutions = [
+    "Современные и функциональные дизайн-проекты.",
+    "Индивидуальные решения для хранения.",
+    "Эргономичная планировка для максимального удобства."
+];
+---
+
+<section id="problem-solution">
+    <div class="cs-container">
+        <div class="cs-image">
+            <Image src={image} alt="Современная кухня" loading="lazy" decoding="async" />
+        </div>
+        <div class="cs-content">
+            <span class="cs-topper">Наша экспертиза</span>
+            <h2 class="cs-title">Превращаем проблемы в идеальные решения</h2>
+            
+            <div class="cs-problem-section">
+                <h3 class="cs-subheader">С какими "болями" сталкиваются наши клиенты?</h3>
+                <ul class="cs-list">
+                    {problems.map(problem => (
+                        <li class="cs-list-item">{problem}</li>
+                    ))}
+                </ul>
+            </div>
+
+            <div class="cs-solution-section">
+                <h3 class="cs-subheader">Как мы их решаем:</h3>
+                 <ul class="cs-list">
+                    {solutions.map(solution => (
+                        <li class="cs-list-item">{solution}</li>
+                    ))}
+                </ul>
+            </div>
+            
+            <a href="/contact" class="cs-button-solid">Обсудить мой проект</a>
+        </div>
+    </div>
+</section>
+
+<style lang="less">
+#problem-solution {
+    padding: var(--sectionPadding);
+
+    .cs-container {
+        width: 100%;
+        max-width: 1280px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+
+        @media (min-width: 768px) {
+            flex-direction: row;
+            align-items: stretch;
+        }
+    }
+
+    .cs-image, .cs-content {
+        width: 100%;
+        flex: 1;
+    }
+    
+    .cs-image {
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    }
+
+    .cs-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cs-topper {
+        text-align: left;
+    }
+
+    .cs-title {
+        text-align: left;
+    }
+
+    .cs-subheader {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--headerColor);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .cs-list {
+        list-style: none;
+        padding: 0;
+        margin-left: 1.5rem;
+    }
+
+    .cs-list-item {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 0.75rem;
+        color: var(--bodyTextColor);
+
+        &:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+    }
+    
+    .cs-button-solid {
+        margin-top: 2rem;
+        align-self: flex-start;
+    }
+
+    /* Dark Mode */
+    body.dark-mode & {
+        .cs-subheader {
+            color: var(--bodyTextColorWhite);
+        }
+
+        .cs-list-item {
+            color: var(--bodyTextColorWhite);
+            opacity: 0.8;
+        }
+    }
+}
+</style>
