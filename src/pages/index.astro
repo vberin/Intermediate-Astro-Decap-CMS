@@ -4,11 +4,11 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { getImage } from "astro:assets";
 
 // Импортируем все наши новые компоненты
-import Hero from "@components/Hero.astro"; // Этот компонент уже был, мы его оставляем
+import Hero from "@components/Hero.astro";
 import SocialProof from "@components/SocialProof.astro";
 import ProblemSolution from "@components/ProblemSolution.astro";
 import WorkProcess from "@components/WorkProcess.astro";
-import FAQ from "@components/FAQ.astro"; // Этот компонент тоже оставляем
+import FAQ from "@components/FAQ.astro";
 import FinalCTA from "@components/FinalCTA.astro";
 import SocialShare from "@components/SocialShare.astro";
 
@@ -22,7 +22,7 @@ const optimizedImage = await getImage({src: landingImage, format: 'avif'});
   description="Создаем интеллектуальные веб-приложения для вашего бизнеса."
   preloadedImage={optimizedImage}
 >
-  <Hero />
+  <Hero optimizedImage={optimizedImage} />
 
   <SocialProof />
 
