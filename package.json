@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@astrojs/sitemap": "^3.5.1",
+		"@iconify-json/mdi": "^1.2.3",
 		"astro": "^5.13.7",
 		"astro-icon": "^1.1.5",
 		"autoprefixer": "^10.4.21",
