@@ -2,6 +2,16 @@
 
 const fetch = require('node-fetch');
 
+// --- НОВОЕ: Генератор случайной строки ---
+function generateRandomString(length) {
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+
 function slugify(text) {
   const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
   const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
@@ -22,11 +32,10 @@ exports.handler = async function(event, context) {
     if (!prompt) return { statusCode: 400, body: 'Prompt is required' };
 
     const geminiApiKey = process.env.GEMINI_API_KEY;
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${geminiApiKey}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${geminiApiKey}`;
 
     const geminiPrompt = `
         You are an expert SEO copywriter. Write a high-quality, structured blog article based on the following request: "${prompt}".
-        
         Your response MUST be a single JSON object with three fields: "title", "description", and "content".
         - "title": An SEO-optimized title for the article (under 60 characters).
         - "description": A brief meta description (under 160 characters).
@@ -43,12 +52,7 @@ exports.handler = async function(event, context) {
         
         const geminiResult = await geminiResponse.json();
 
-        // --- УЛУЧШЕННОЕ ЛОГИРОВАНИЕ ДЛЯ ОТЛАДКИ ---
-        console.log('Gemini API Response:', JSON.stringify(geminiResult, null, 2));
-
-        // --- УЛУЧШЕННАЯ ПРОВЕРКА ОШИБОК ---
         if (!geminiResponse.ok || !geminiResult.candidates || geminiResult.candidates.length === 0) {
-            // Если есть сообщение об ошибке от API, выводим его
             const errorMessage = geminiResult.error ? geminiResult.error.message : 'No content generated.';
             throw new Error(`Gemini API Error: ${errorMessage}`);
         }
@@ -61,9 +65,9 @@ exports.handler = async function(event, context) {
         return { statusCode: 500, body: `Failed to generate article content. Details: ${error.message}` };
     }
 
-    // --- ШАГ 2: СОЗДАНИЕ ФАЙЛА В GITHUB (остается без изменений) ---
     const { title, description, content } = articleData;
-    const slug = slugify(title);
+    // --- ИЗМЕНЕНИЕ: Добавляем случайный суффикс к slug ---
+    const slug = `${slugify(title)}-${generateRandomString(4)}`;
     const date = new Date().toISOString();
     
     const fileContent = `---
@@ -94,7 +98,7 @@ ${content}
     };
 
     try {
-        await fetch(githubApiUrl, {
+        const githubResponse = await fetch(githubApiUrl, {
             method: 'PUT',
             headers: {
                 'Authorization': `token ${githubToken}`,
@@ -104,12 +108,20 @@ ${content}
             body: JSON.stringify(commitData)
         });
 
+        // --- УЛУЧШЕННОЕ ЛОГИРОВАНИЕ ОТВЕТА GITHUB ---
+        const githubResult = await githubResponse.json();
+        console.log('GitHub API Response:', JSON.stringify(githubResult, null, 2));
+
+        if (!githubResponse.ok) {
+            throw new Error(`GitHub API Error: ${githubResult.message || 'Failed to commit file.'}`);
+        }
+
         return {
             statusCode: 200,
             body: JSON.stringify({ message: `Article "${title}" created successfully!` })
         };
     } catch (error) {
         console.error('Error creating file in GitHub:', error);
-        return { statusCode: 500, body: 'Failed to create article file in repository.' };
+        return { statusCode: 500, body: `Failed to create article file. Details: ${error.message}` };
     }
 };
