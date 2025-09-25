@@ -61,12 +61,6 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 
                 const data = await response.json();
                 
-                // Наша serverless-функция теперь напрямую возвращает Markdown
-                // Мы больше не парсим JSON на клиенте
-                
-                // Вместо этого мы будем ожидать, что функция вернет 
-                // полный Markdown-текст статьи, созданной на бэкенде
-                
                 // В данном случае, так как функция уже создает файл в репозитории,
                 // мы просто покажем сообщение об успехе.
                 
@@ -84,16 +78,25 @@ import BaseLayout from "@layouts/BaseLayout.astro";
                 generateButton.style.display = 'block';
             }
         });
+
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(resultOutput.textContent)
+                .then(() => {
+                    alert('Текст скопирован в буфер обмена!');
+                })
+                .catch(err => {
+                    console.error('Не удалось скопировать текст: ', err);
+                });
+        });
     });
 </script>
-
 
 <style lang="less">
 .generator-container {
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
-    padding-top: 10rem;
+    padding-top: 10rem; /* ИСПРАВЛЕНИЕ: Добавлен верхний отступ для компенсации высоты шапки */
     text-align: center;
 }
 h1 {
