@@ -22,7 +22,7 @@ exports.handler = async function(event, context) {
     if (!prompt) return { statusCode: 400, body: 'Prompt is required' };
 
     const geminiApiKey = process.env.GEMINI_API_KEY;
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${geminiApiKey}`;
 
     const geminiPrompt = `
         You are an expert SEO copywriter. Write a high-quality, structured blog article based on the following request: "${prompt}".
