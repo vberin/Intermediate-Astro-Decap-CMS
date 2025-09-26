@@ -1,9 +1,12 @@
 # Use DecapBridge auth (required)
 backend:
   name: git-gateway
-  repo: CodeStitchOfficial/Intermediate-Astro-Decap-CMS # Убедитесь, что здесь ваш репозиторий
+  # --- ИЗМЕНЕНИЕ 1: Замените на путь к вашему репозиторию ---
+  # Например: BuckyBuck135/astrotiktak
+  repo: "ВАШ_ЛОГИН_GITHUB/НАЗВАНИЕ_ВАШЕГО_РЕПОЗИТОРИЯ" 
   branch: main
-  identity_url: https://auth.decapbridge.com/sites/1ea1e8dd-3c54-40d7-bbe1-74af6c8f16f6 # Убедитесь, что здесь ваш URL
+  # --- ИЗМЕНЕНИЕ 2: Замените на URL, который вы получили с decapbridge.com ---
+  identity_url: "https://auth.decapbridge.com/sites/ВСТАВЬТЕ_ВАШ_УНИКАЛЬНЫЙ_ID"
   gateway_url: https://gateway.decapbridge.com
 
   # Quickly see who did what (optional)
