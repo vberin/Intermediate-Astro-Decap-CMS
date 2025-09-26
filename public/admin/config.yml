@@ -1,12 +1,9 @@
 # Use DecapBridge auth (required)
 backend:
   name: git-gateway
-  # --- ИЗМЕНЕНИЕ 1: Замените на путь к вашему репозиторию ---
-  # Например: BuckyBuck135/astrotiktak
-  repo: "ВАШ_ЛОГИН_GITHUB/НАЗВАНИЕ_ВАШЕГО_РЕПОЗИТОРИЯ" 
+  repo: vberin/Intermediate-Astro-Decap-CMS # Взят из вашего кода
   branch: main
-  # --- ИЗМЕНЕНИЕ 2: Замените на URL, который вы получили с decapbridge.com ---
-  identity_url: "https://auth.decapbridge.com/sites/ВСТАВЬТЕ_ВАШ_УНИКАЛЬНЫЙ_ID"
+  identity_url: https://auth.decapbridge.com/sites/6753173a-b6a1-4bb0-ae19-22755fa551f4 # Взят из вашего кода
   gateway_url: https://gateway.decapbridge.com
 
   # Quickly see who did what (optional)
@@ -18,17 +15,16 @@ backend:
     deleteMedia: Delete “{{path}}” - {{author-name}} <{{author-login}}> via DecapBridge
     openAuthoring: Message {{message}} - {{author-name}} <{{author-login}}> via DecapBridge
 
-# Logo for Decap login page. Change url to a link to the image you want to use, no file paths, must be a URL
+# Better Decap + Bridge logo (optional)
 logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 
-# Add site link in DecapCMS (optional)
-site_url: https://astrotiktak.netlify.app # Убедитесь, что здесь URL вашего сайта
+# Add site links in DecapCMS (optional)
+site_url: https://astrotiktak.netlify.app
 
 media_folder: src/assets/images/blog # Location where files will be stored in the repo - we store them in src so that Astro can optimize them.
 public_folder: src/assets/images/blog # Ensure that this path is the same as the media_folder path above.
 
 collections:
-  # --- ИСПРАВЛЕНИЕ: Используем 'files' для коллекций, управляющих одним файлом ---
   - name: "content_plan"
     label: "Планировщик Контента"
     files:
@@ -42,7 +38,6 @@ collections:
           - { label: "Желаемая дата публикации", name: "publishDate", widget: "datetime" }
           - { label: "Статус", name: "status", widget: "hidden", default: "scheduled" }
 
-  # --- ИСПРАВЛЕНИЕ: Используем 'files' для коллекций, управляющих одним файлом ---
   - name: "authors"
     label: "Авторы"
     files:
@@ -54,19 +49,18 @@ collections:
          - { label: "Имя", name: "name", widget: "string" }
          - { label: "Должность", name: "position", widget: "string" }
 
-  - name: "blog" # Used in routes, e.g., /admin/collections/blog. Is also the key when fetching data from the CMS.
-    label: "Blog" # Used in the admin dashboard UI
-    folder: "src/content/blog" # The path to the folder where the documents are stored
-    create: true # Allow users to create new documents in this collection
-    fields: # The fields for each document
+  - name: "blog"
+    label: "Blog"
+    folder: "src/content/blog"
+    create: true
+    fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "string" }
       
-      # --- ОБНОВЛЕННОЕ ПОЛЕ "АВТОР" ---
       - label: "Автор"
         name: "author"
         widget: "relation"
-        collection: "authors" # Эта связь продолжит работать
+        collection: "authors"
         search_fields: ["authors_list.*.name"]
         value_field: "authors_list.*.name"
         display_fields: ["authors_list.*.name"]
@@ -75,7 +69,6 @@ collections:
       - { label: "Cover Image", name: "image", widget: "image" }
       - { label: "Image Caption", name: "imageAlt", widget: "string" }
       - { label: "Is it a featured post?", name: "isFeatured", widget: "boolean", default: false }
-      # --- Секция SEO (остается без изменений) ---
       - label: "Тип контента"
         name: "contentType"
         widget: "select"
