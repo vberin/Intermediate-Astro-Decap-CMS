@@ -25,6 +25,74 @@ media_folder: src/assets/images/blog # Location where files will be stored in th
 public_folder: src/assets/images/blog # Ensure that this path is the same as the media_folder path above.
 
 collections:
+  # --- НОВАЯ КОЛЛЕКЦИЯ: БАЗА ЗНАНИЙ ДЛЯ ОБУЧЕНИЯ AI ---
+  - name: "knowledge_base"
+    label: "База знаний AI"
+    label_singular: "База знаний"
+    files:
+      - label: "Информация о компании для AI"
+        name: "knowledge_base_main"
+        file: "src/data/knowledge-base.json" # <-- Ссылка на наш новый файл
+        description: "Заполните эту информацию максимально подробно. AI-консультант будет использовать эти данные для ответов на вопросы посетителей сайта."
+        fields:
+          - label: "Основная информация о компании"
+            name: "companyInfo"
+            widget: "object"
+            fields:
+              - { label: "Название компании", name: "companyName", widget: "string" }
+              - { label: "Слоган (в одно предложение)", name: "tagline", widget: "string" }
+              - label: "Подробное описание 'О нас'"
+                name: "aboutUs"
+                widget: "markdown"
+                hint: "Расскажите о вашей компании. Когда она была основана? Какова ваша миссия? Какие ценности вы разделяете? Ваша история."
+          - label: "Продукты и Услуги"
+            name: "services"
+            widget: "list"
+            summary: "{{fields.serviceName}}"
+            fields:
+              - { label: "Название услуги/продукта", name: "serviceName", widget: "string" }
+              - label: "Подробное описание"
+                name: "serviceDescription"
+                widget: "markdown"
+                hint: "Что входит в эту услугу? Какую проблему клиента она решает? Каков результат для клиента?"
+              - label: "Цена (например, 'от 1000 грн' или 'по запросу')"
+                name: "servicePrice"
+                widget: "string"
+          - label: "Целевая аудитория"
+            name: "targetAudience"
+            widget: "markdown"
+            hint: "Кто ваш идеальный клиент? Опишите его возраст, интересы, проблемы, потребности. Где он проводит время онлайн? На каком языке он говорит?"
+          - label: "Уникальное Торговое Предложение (УТП)"
+            name: "usp"
+            widget: "markdown"
+            hint: "Что делает вас уникальными? Почему клиенты должны выбрать именно вас, а не ваших конкурентов? Укажите 3-5 главных преимуществ."
+          - label: "Внешние ссылки"
+            name: "externalLinks"
+            widget: "object"
+            fields:
+              - label: "Ссылки на социальные сети"
+                name: "socialLinks"
+                widget: "list"
+                fields:
+                  - label: "Платформа"
+                    name: "platform"
+                    widget: "select"
+                    options: ["Facebook", "Instagram", "Telegram", "LinkedIn", "X (Twitter)", "YouTube", "TikTok"]
+                  - { label: "URL", name: "url", widget: "string" }
+              - label: "Ссылки на страницы с отзывами"
+                name: "reviewLinks"
+                widget: "list"
+                fields:
+                  - { label: "Источник (например, 'Google Maps')", name: "platform", widget: "string" }
+                  - { label: "URL", name: "url", widget: "string" }
+          - label: "Часто Задаваемые Вопросы (FAQ)"
+            name: "faq"
+            widget: "list"
+            summary: "{{fields.question}}"
+            fields:
+              - { label: "Вопрос", name: "question", widget: "string" }
+              - { label: "Ответ", name: "answer", widget: "markdown" }
+
   - name: "content_plan"
     label: "Планировщик Контента"
     files:
