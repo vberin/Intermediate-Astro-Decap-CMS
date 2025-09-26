@@ -25,27 +25,31 @@ media_folder: src/assets/images/blog # Location where files will be stored in th
 public_folder: src/assets/images/blog # Ensure that this path is the same as the media_folder path above.
 
 collections:
-  # --- НОВАЯ КОЛЛЕКЦИЯ ДЛЯ ПЛАНИРОВЩИКА ---
+  # --- ИСПРАВЛЕНИЕ: Используем 'files' для коллекций, управляющих одним файлом ---
   - name: "content_plan"
     label: "Планировщик Контента"
-    label_singular: "Задача на публикацию"
-    file: "src/data/content-plan.json"
-    description: "Добавьте сюда темы для будущих статей. Система будет автоматически генерировать и публиковать их в указанную дату."
-    widget: "list"
-    fields:
-      - { label: "Промпт (тема) для статьи", name: "prompt", widget: "string" }
-      - { label: "Желаемая дата публикации", name: "publishDate", widget: "datetime" }
-      - { label: "Статус", name: "status", widget: "hidden", default: "scheduled" }
+    files:
+      - label: "План публикаций"
+        name: "plan"
+        file: "src/data/content-plan.json"
+        description: "Добавьте сюда темы для будущих статей. Система будет автоматически генерировать и публиковать их в указанную дату."
+        widget: "list"
+        fields:
+          - { label: "Промпт (тема) для статьи", name: "prompt", widget: "string" }
+          - { label: "Желаемая дата публикации", name: "publishDate", widget: "datetime" }
+          - { label: "Статус", name: "status", widget: "hidden", default: "scheduled" }
 
-  # --- НОВАЯ КОЛЛЕКЦИЯ ДЛЯ УПРАВЛЕНИЯ АВТОРАМИ ---
+  # --- ИСПРАВЛЕНИЕ: Используем 'files' для коллекций, управляющих одним файлом ---
   - name: "authors"
     label: "Авторы"
-    label_singular: "Автор"
-    file: "src/data/authors.json"
-    widget: "list"
-    fields:
-      - { label: "Имя", name: "name", widget: "string" }
-      - { label: "Должность", name: "position", widget: "string" }
+    files:
+     - label: "Список авторов"
+       name: "authors_list"
+       file: "src/data/authors.json"
+       widget: "list"
+       fields:
+         - { label: "Имя", name: "name", widget: "string" }
+         - { label: "Должность", name: "position", widget: "string" }
 
   - name: "blog" # Used in routes, e.g., /admin/collections/blog. Is also the key when fetching data from the CMS.
     label: "Blog" # Used in the admin dashboard UI
@@ -59,10 +63,10 @@ collections:
       - label: "Автор"
         name: "author"
         widget: "relation"
-        collection: "authors"
-        search_fields: ["name"]
-        value_field: "name"
-        display_fields: ["name"]
+        collection: "authors" # Эта связь продолжит работать
+        search_fields: ["authors_list.*.name"]
+        value_field: "authors_list.*.name"
+        display_fields: ["authors_list.*.name"]
         
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Cover Image", name: "image", widget: "image" }
