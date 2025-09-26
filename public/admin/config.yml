@@ -1,9 +1,9 @@
 # Use DecapBridge auth (required)
 backend:
   name: git-gateway
-  repo: CodeStitchOfficial/Intermediate-Astro-Decap-CMS
+  repo: CodeStitchOfficial/Intermediate-Astro-Decap-CMS # Убедитесь, что здесь ваш репозиторий
   branch: main
-  identity_url: https://auth.decapbridge.com/sites/1ea1e8dd-3c54-40d7-bbe1-74af6c8f16f6
+  identity_url: https://auth.decapbridge.com/sites/1ea1e8dd-3c54-40d7-bbe1-74af6c8f16f6 # Убедитесь, что здесь ваш URL
   gateway_url: https://gateway.decapbridge.com
 
   # Quickly see who did what (optional)
@@ -19,12 +19,34 @@ backend:
 logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 
 # Add site link in DecapCMS (optional)
-site_url: https://intermediate-astro-kit-decap-cms.netlify.app
+site_url: https://astrotiktak.netlify.app # Убедитесь, что здесь URL вашего сайта
 
 media_folder: src/assets/images/blog # Location where files will be stored in the repo - we store them in src so that Astro can optimize them.
 public_folder: src/assets/images/blog # Ensure that this path is the same as the media_folder path above.
 
 collections:
+  # --- НОВАЯ КОЛЛЕКЦИЯ ДЛЯ ПЛАНИРОВЩИКА ---
+  - name: "content_plan"
+    label: "Планировщик Контента"
+    label_singular: "Задача на публикацию"
+    file: "src/data/content-plan.json"
+    description: "Добавьте сюда темы для будущих статей. Система будет автоматически генерировать и публиковать их в указанную дату."
+    widget: "list"
+    fields:
+      - { label: "Промпт (тема) для статьи", name: "prompt", widget: "string" }
+      - { label: "Желаемая дата публикации", name: "publishDate", widget: "datetime" }
+      - { label: "Статус", name: "status", widget: "hidden", default: "scheduled" }
+
+  # --- НОВАЯ КОЛЛЕКЦИЯ ДЛЯ УПРАВЛЕНИЯ АВТОРАМИ ---
+  - name: "authors"
+    label: "Авторы"
+    label_singular: "Автор"
+    file: "src/data/authors.json"
+    widget: "list"
+    fields:
+      - { label: "Имя", name: "name", widget: "string" }
+      - { label: "Должность", name: "position", widget: "string" }
+
   - name: "blog" # Used in routes, e.g., /admin/collections/blog. Is also the key when fetching data from the CMS.
     label: "Blog" # Used in the admin dashboard UI
     folder: "src/content/blog" # The path to the folder where the documents are stored
@@ -32,12 +54,21 @@ collections:
     fields: # The fields for each document
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "string" }
-      - { label: "Author", name: "author", widget: "string" }
+      
+      # --- ОБНОВЛЕННОЕ ПОЛЕ "АВТОР" ---
+      - label: "Автор"
+        name: "author"
+        widget: "relation"
+        collection: "authors"
+        search_fields: ["name"]
+        value_field: "name"
+        display_fields: ["name"]
+        
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Cover Image", name: "image", widget: "image" }
       - { label: "Image Caption", name: "imageAlt", widget: "string" }
       - { label: "Is it a featured post?", name: "isFeatured", widget: "boolean", default: false }
-      # --- НОВЫЕ ПОЛЯ ДЛЯ SEO-ДВИГАТЕЛЯ ---
+      # --- Секция SEO (остается без изменений) ---
       - label: "Тип контента"
         name: "contentType"
         widget: "select"
@@ -53,8 +84,8 @@ collections:
         value_field: "{{slug}}"
         display_fields: ["title"]
         required: false
-        # Это поле будет отображаться только если тип контента - "Кластерная статья"
         condition:
           field: "contentType"
           value: "cluster"
       - { label: "Body", name: "body", widget: "markdown" }
+
