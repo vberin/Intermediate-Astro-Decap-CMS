@@ -1,3 +1,6 @@
-# netlify.toml
 [functions]
   directory = "netlify/functions"
+
+# Запускать эту функцию раз в день в полночь по UTC
+[functions.publish-scheduled-article]
+  schedule = "@daily"
